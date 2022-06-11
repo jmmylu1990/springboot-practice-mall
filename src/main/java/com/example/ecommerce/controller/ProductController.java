@@ -18,7 +18,6 @@ public class ProductController {
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
-        System.out.println(productId);
         Product product = productService.getProductById(productId);
 
         if (product != null) {
@@ -40,5 +39,21 @@ public class ProductController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductDto productDto) {
+        //檢查product是否存在
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        //修改商品的數據
+        productService.updateProduct(productId, productDto);
+        Product updateProduct = productService.getProductById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
+
+
     }
 }
