@@ -1,5 +1,6 @@
 package com.example.ecommerce.model;
 
+import com.example.ecommerce.constant.ProductCategory;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ public @Data class Product implements Serializable {
 
     private Integer productId;
     private String productName;
-    private String category;
+    private ProductCategory category;
     private String imageUrl;
     private Integer price;
     private Integer stock;
