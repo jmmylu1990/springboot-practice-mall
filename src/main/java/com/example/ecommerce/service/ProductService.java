@@ -5,6 +5,7 @@ import com.example.ecommerce.model.Product;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.List;
 
 public interface ProductService {
 
@@ -12,5 +13,6 @@ public interface ProductService {
     Integer createProduct(ProductDto productDto);
     void updateProduct(Integer productId, ProductDto productDto);
     void deleteProductById(Integer productId);
+    List<Product> getProducts();
 
 }
