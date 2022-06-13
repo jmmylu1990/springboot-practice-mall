@@ -2,6 +2,7 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.constant.ProductCategory;
 import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.dto.ProductQueryParams;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,11 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search) {
-
-            List<Product> productList = productService.getProducts(category,search);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        List<Product> productList = productService.getProducts(productQueryParams);
+        //    List<Product> productList = productService.getProducts(category,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 

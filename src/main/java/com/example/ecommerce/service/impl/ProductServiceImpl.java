@@ -3,6 +3,7 @@ package com.example.ecommerce.service.impl;
 import com.example.ecommerce.constant.ProductCategory;
 import com.example.ecommerce.dao.ProductDao;
 import com.example.ecommerce.dto.ProductDto;
+import com.example.ecommerce.dto.ProductQueryParams;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
-        return  productDao.getProducts(category,search);
-    }
+//    @Override
+//    public List<Product> getProducts(ProductCategory category,String search) {
+//        return  productDao.getProducts(category,search);
+//    }
+@Override
+public List<Product> getProducts(ProductQueryParams productQueryParams) {
+    return  productDao.getProducts(productQueryParams);
+}
 }
