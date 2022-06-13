@@ -99,17 +99,24 @@ public class ProductDaoImpl implements ProductDao {
         String sql = "SELECT product_id,product_name,category,image_url,price,stock," +
                 "description, created_date, last_modified_date FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
-        if(productQueryParams.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category",productQueryParams.getCategory().name());
-        }
-        if(productQueryParams.getSearch()!=null){
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search","%" +productQueryParams.getSearch() +"%");
-        }
 
+        //查詢條件
+        if (productQueryParams.getCategory() != null) {
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().name());
+        }
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
+        //排序
         sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
-        return namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+        //分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit",productQueryParams.getLimit());
+        map.put("offset",productQueryParams.getOffset());
+
+        return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
     }
 
 

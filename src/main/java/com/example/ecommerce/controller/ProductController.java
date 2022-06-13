@@ -8,29 +8,40 @@ import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
-
+@Validated
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
+
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+            //查詢條件
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
+            //排序softing
             @RequestParam(defaultValue = "created_date") String orderBy,
-            @RequestParam(defaultValue = "desc") String sort) {
+            @RequestParam(defaultValue = "desc") String sort,
+            //分頁Pagination,添加了驗證標註，記得添加@Validated
+            @RequestParam(defaultValue = "0") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "5") @Min(0) Integer offset) {
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
-
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
+    
         List<Product> productList = productService.getProducts(productQueryParams);
         //    List<Product> productList = productService.getProducts(category,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
